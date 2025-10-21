@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import os
+import argparse
 
 import xarray as xr
 import matplotlib.pyplot as plt
@@ -61,6 +62,18 @@ class EMODnetBathymetryDownloader:
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Download EMODnet bathymetry for a small domain and plot it."
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        dest="output",
+        help="If set, save the plot to this file path (or directory). If omitted, the plot is shown interactively.",
+        default=None,
+    )
+    args = parser.parse_args()
+
     domain = DomainGeometry(
         minimum_latitude=43.5,
         maximum_latitude=46.0,
@@ -77,10 +90,32 @@ def main():
 
     # Create a figure and plot. Use a sensible colormap for bathymetry.
     plt.figure(figsize=(10, 7))
-    im = da.plot(cmap="terrain")
+    im = da.plot(cmap="terrain")  # type: ignore
 
     plt.title(f"Bathymetry")
-    plt.show()
+
+    # If an output path was provided, save the figure there instead of showing it.
+    if args.output:
+        out_path = args.output
+        # If the user provided a directory, create a default filename inside it.
+        if os.path.isdir(out_path):
+            filename = os.path.join(out_path, "bathymetry.png")
+        else:
+            filename = out_path
+            # If no extension provided, default to .png
+            root, ext = os.path.splitext(filename)
+            if ext == "":
+                filename = f"{filename}.png"
+
+        # Ensure parent directory exists
+        parent = os.path.dirname(filename)
+        if parent:
+            os.makedirs(parent, exist_ok=True)
+
+        plt.savefig(filename, bbox_inches="tight", dpi=150)
+        print(f"Saved plot to: {filename}")
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":
