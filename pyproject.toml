@@ -15,6 +15,7 @@ requires-python = ">=3.9"
 authors = [ { name = "Stefano Piani", email = "spiani@ogs.it" } ]
 
 dependencies = [
+  "matplotlib>=3.9.4",
   "netcdf4>=1.7.2",
   "xarray>=2022.10.0",
 ]

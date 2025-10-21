@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+import os
 
 import xarray as xr
+import matplotlib.pyplot as plt
 
 
 @dataclass
@@ -25,7 +27,6 @@ class EMODnetBathymetryDownloader:
     """
     A class to facilitate downloading bathymetry data from the EMODnet ERDDAP
     server.
-
 
     Attributes:
         URL (str): The URL of the EMODnet bathymetry dataset.
@@ -61,14 +62,25 @@ class EMODnetBathymetryDownloader:
 
 def main():
     domain = DomainGeometry(
-        minimum_latitude=34.0,
-        maximum_latitude=42.0,
-        minimum_longitude=-10.0,
-        maximum_longitude=2.0,
+        minimum_latitude=43.5,
+        maximum_latitude=46.0,
+        minimum_longitude=12.0,
+        maximum_longitude=18.0,
     )
     downloader = EMODnetBathymetryDownloader(domain)
     dataset = downloader.download_data()
     print(dataset)
+
+
+    var_name = "elevation"
+    da = dataset[var_name]
+
+    # Create a figure and plot. Use a sensible colormap for bathymetry.
+    plt.figure(figsize=(10, 7))
+    im = da.plot(cmap="terrain")
+
+    plt.title(f"Bathymetry")
+    plt.show()
 
 
 if __name__ == "__main__":
