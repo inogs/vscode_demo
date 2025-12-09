@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 # STEFANOPIANI
-
+# mod 2
 @dataclass
 class DomainGeometry:
     """
