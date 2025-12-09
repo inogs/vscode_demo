@@ -6,7 +6,6 @@ import xarray as xr
 import matplotlib.pyplot as plt
 
 
-# adding comments to explain the code
 # STEFANOPIANI
 
 @dataclass
