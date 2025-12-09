@@ -92,7 +92,7 @@ def main():
 
     # Create a figure and plot. Use a sensible colormap for bathymetry.
     plt.figure(figsize=(10, 7))
-    im = da.plot(cmap="terrain")  # type: ignore
+    da.plot(cmap="terrain")  # type: ignore
 
     plt.title(f"Bathymetry")
 
